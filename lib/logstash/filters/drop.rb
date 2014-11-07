@@ -7,7 +7,7 @@ require "logstash/namespace"
 # Drops everything that gets to this filter.
 #
 # This is best used in combination with conditionals, for example:
-#
+# [source,ruby]
 #     filter {
 #       if [loglevel] == "debug" { 
 #         drop { } 
@@ -15,7 +15,7 @@ require "logstash/namespace"
 #     }
 #
 # The above will only pass events to the drop filter if the loglevel field is
-# "debug". This will cause all events matching to be dropped.
+# `debug`. This will cause all events matching to be dropped.
 class LogStash::Filters::Drop < LogStash::Filters::Base
   config_name "drop"
   milestone 3
