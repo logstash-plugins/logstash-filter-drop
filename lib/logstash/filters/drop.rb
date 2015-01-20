@@ -18,7 +18,6 @@ require "logstash/namespace"
 # `debug`. This will cause all events matching to be dropped.
 class LogStash::Filters::Drop < LogStash::Filters::Base
   config_name "drop"
-  milestone 3
 
   public
   def register
