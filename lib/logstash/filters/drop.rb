@@ -18,7 +18,20 @@ require "logstash/namespace"
 # `debug`. This will cause all events matching to be dropped.
 class LogStash::Filters::Drop < LogStash::Filters::Base
   config_name "drop"
-
+  # Drop all the events within a pre-configured percentage.
+  #
+  # This is useful if you just need a sample but not the whole.
+  #
+  # Example, to only drop around 40% of the events that have the field loglevel wiht value "debug".
+  #
+  #     filter {
+  #       if [loglevel] == "debug" { 
+  #         drop { 
+  #           sample => 40
+  #         } 
+  #       }
+  #     }
+  config :sample, :validate => :number, :default => 100
   public
   def register
     # nothing to do.
@@ -26,6 +39,6 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
 
   public
   def filter(event)
-    event.cancel
+    event.cancel if rand < (@sample / 100.0)
   end # def filter
 end # class LogStash::Filters::Drop
