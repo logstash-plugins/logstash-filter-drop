@@ -39,6 +39,6 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
 
   public
   def filter(event)
-    event.cancel if (@percentage < 100 and rand < (@percentage / 100.0))
+    event.cancel if rand < (@percentage / 100.0)
   end # def filter
 end # class LogStash::Filters::Drop
