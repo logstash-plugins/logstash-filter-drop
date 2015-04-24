@@ -15,4 +15,16 @@ describe LogStash::Filters::Drop do
     end
   end
 
+  describe "drop the event" do
+    config <<-CONFIG
+      filter {
+        drop { percentage => 0 }
+      }
+    CONFIG
+
+    sample "hello" do
+      reject { subject }.nil?
+    end
+  end
+
 end

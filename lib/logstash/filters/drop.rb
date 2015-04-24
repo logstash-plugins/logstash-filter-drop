@@ -9,8 +9,8 @@ require "logstash/namespace"
 # This is best used in combination with conditionals, for example:
 # [source,ruby]
 #     filter {
-#       if [loglevel] == "debug" { 
-#         drop { } 
+#       if [loglevel] == "debug" {
+#         drop { }
 #       }
 #     }
 #
@@ -25,10 +25,10 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
   # Example, to only drop around 40% of the events that have the field loglevel wiht value "debug".
   #
   #     filter {
-  #       if [loglevel] == "debug" { 
-  #         drop { 
+  #       if [loglevel] == "debug" {
+  #         drop {
   #           percentage => 40
-  #         } 
+  #         }
   #       }
   #     }
   config :percentage, :validate => :number, :default => 100
@@ -39,6 +39,6 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
 
   public
   def filter(event)
-    event.cancel if (@percentage < 100 and rand < (@percentage / 100.0))
+    event.cancel if (@percentage == 100 || rand < (@percentage / 100.0))
   end # def filter
 end # class LogStash::Filters::Drop
