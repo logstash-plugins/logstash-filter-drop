@@ -22,7 +22,7 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
   #
   # This is useful if you just need a percentage but not the whole.
   #
-  # Example, to only drop around 40% of the events that have the field loglevel wiht value "debug".
+  # Example, to only drop around 40% of the events that have the field loglevel with value "debug".
   #
   #     filter {
   #       if [loglevel] == "debug" {
