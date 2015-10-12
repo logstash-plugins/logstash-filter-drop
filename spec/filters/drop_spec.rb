@@ -3,28 +3,29 @@ require "logstash/filters/drop"
 
 describe LogStash::Filters::Drop do
 
-  describe "drop the event" do
-    config <<-CONFIG
-      filter {
-        drop { }
-      }
-    CONFIG
+  let(:config) { Hash.new }
+  subject { described_class.new(config) }
 
-    sample "hello" do
-      insist { subject }.nil?
-    end
-  end
+  let(:message) { "hello" }
+  let(:event)   { LogStash::Event.new("message" => message) }
 
   describe "drop the event" do
-    config <<-CONFIG
-      filter {
-        drop { percentage => 0 }
-      }
-    CONFIG
 
-    sample "hello" do
-      reject { subject }.nil?
+    it "drops the event" do
+      subject.register
+      subject.filter(event)
+      expect(event).to be_cancelled
+    end
+
+    context "when using percentage" do
+      let(:config) { { "percentage" => 0 }}
+
+      it "drops the event" do
+        subject.register
+        subject.filter(event)
+        expect(event).not_to be_cancelled
+      end
+
     end
   end
-
 end
