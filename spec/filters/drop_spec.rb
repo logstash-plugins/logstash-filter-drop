@@ -16,16 +16,30 @@ describe LogStash::Filters::Drop do
       subject.filter(event)
       expect(event).to be_cancelled
     end
-
+  
     context "when using percentage" do
-      let(:config) { { "percentage" => 0 }}
+      let(:config) { { "percentage" => 100 }}
 
       it "drops the event" do
         subject.register
         subject.filter(event)
-        expect(event).not_to be_cancelled
+        expect(event).to be_cancelled
       end
-
     end
+
+  end
+
+  describe "keeps the event" do
+
+    context "when using percentage with added field" do
+      let(:config) { { "percentage" => 0, "add_field" => { "field1" => "pass" } }}
+
+      it "keeps the event" do
+        subject.register
+        subject.filter(event)
+        expect(event.get("field1")).to eq("pass")
+      end
+    end
+
   end
 end
