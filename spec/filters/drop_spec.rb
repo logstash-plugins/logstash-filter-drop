@@ -20,7 +20,7 @@ describe LogStash::Filters::Drop do
     context "when using percentage" do
       let(:config) { { "percentage" => 0 }}
 
-      it "drops the event" do
+      it "does not drop the event" do
         subject.register
         subject.filter(event)
         expect(event).not_to be_cancelled
