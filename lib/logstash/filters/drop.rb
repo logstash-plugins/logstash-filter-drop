@@ -32,13 +32,35 @@ class LogStash::Filters::Drop < LogStash::Filters::Base
   #       }
   #     }
   config :percentage, :validate => :number, :default => 100
+  # Write any events that are dropped by this filter to the dead letter queue.
+  #
+  # The dead letter queue must be enabled for this feature to be useful using the Logstash setting
+  # `dead_letter_queue.enable`.
+  config :dlq_enabled, :validate => :boolean, :default => false
+  # The reason to provide when writing this event to the dead letter queue. The sprintf format may
+  # be used in this value.
+  #
+  # The `dlq_enabled` flag must be set to `true` for this value to take effect.
+  config :dlq_reason, :validate => :string, :default => "Manually dropped"
+
   public
   def register
-    # nothing to do.
+    @dlq_writer = dlq_enabled? ? execution_context.dlq_writer : nil
   end
 
   public
   def filter(event)
-    event.cancel if (@percentage == 100 || rand < (@percentage / 100.0))
+    if (@percentage == 100 || rand < (@percentage / 100.0))
+      @dlq_writer.write(event, event.sprintf(@dlq_reason)) if @dlq_writer
+      event.cancel
+    end # if rand < @percentage
   end # def filter
+
+  def dlq_enabled?
+    # TODO there should be a better way to query if DLQ is enabled
+    # See more in: https://github.com/elastic/logstash/issues/8064
+    @dlq_enabled &&
+      respond_to?(:execution_context) && execution_context.respond_to?(:dlq_writer) &&
+      !execution_context.dlq_writer.inner_writer.is_a?(::LogStash::Util::DummyDeadLetterQueueWriter)
+  end
 end # class LogStash::Filters::Drop
