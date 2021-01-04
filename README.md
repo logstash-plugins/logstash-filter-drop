@@ -1,6 +1,6 @@
 # Logstash Plugin
 
-[![Travis Build Status](https://travis-ci.org/logstash-plugins/logstash-filter-drop.svg)](https://travis-ci.org/logstash-plugins/logstash-filter-drop)
+[![Travis Build Status](https://travis-ci.com/logstash-plugins/logstash-filter-drop.svg)](https://travis-ci.com/logstash-plugins/logstash-filter-drop)
 
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
