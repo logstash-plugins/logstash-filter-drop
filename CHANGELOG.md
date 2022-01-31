@@ -1,3 +1,6 @@
+## 3.0.6
+  - [IGNORE] Meaningless change to docs to test webhook [#17](https://api.github.com/repos/logstash-plugins/logstash-filter-drop/pulls/17)
+
 ## 3.0.5
   - Update gemspec summary
 
